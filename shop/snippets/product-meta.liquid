@@ -1,0 +1,46 @@
+{%- assign option = product.options_with_values.first -%}
+{%- assign contenance = option.values.first -%}
+
+<div class="ProductMeta">
+  {%- if section.settings.show_vendor and product.vendor != blank -%}
+    <h2 class="ProductMeta__Vendor Heading u-h6">
+      {%- assign vendor_handle = product.vendor | handle -%}
+      {%- assign collection_for_vendor = collections[vendor_handle] -%}
+
+      {%- unless collection_for_vendor.empty? -%}
+        <a href="{{ collection_for_vendor.url }}">{{ product.vendor }}</a>
+      {%- else -%}
+        {{- product.vendor -}}
+      {%- endunless -%}
+    </h2>
+  {%- endif -%}
+
+  <h1 class="ProductMeta__Title Heading u-h4">
+    {%- if template.name == 'product' -%}
+      {{- product.title -}}
+    {%- else -%}
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    {%- endif -%}
+    <span class="ProductMeta__SubTitle hidden">{{ product.metafields.global.subtitle }}</span>
+  </h1>
+  
+  {% if contenance != 'Default Title' %}
+    {% unless product.handle contains 'routine' %}
+      <p class="ProductMeta__Contenance">{{ contenance }}</p>
+    {% endunless %}
+  {% endif %}
+
+  {%- if section.settings.show_sku and product.selected_or_first_available_variant.sku != blank -%}
+    <p class="ProductMeta__Sku Heading Text--subdued u-h6">{{ 'product.form.sku' | t }}: <span class="ProductMeta__SkuNumber">{{ product.selected_or_first_available_variant.sku }}</span></p>
+  {%- endif -%}
+  
+  {%- if product.template_suffix != 'coming-soon' -%}
+  	{%- include 'product-form' -%}
+  {%- endif -%}
+
+  {%- if show_description and section.settings.description_below_add_to_cart == false -%}
+    <div class="ProductMeta__Description">
+      {{ product.description }}
+    </div>
+  {%- endif -%}
+</div>

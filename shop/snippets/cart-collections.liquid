@@ -1,0 +1,58 @@
+{%- if settings.layout_mode == 'carousel' -%}
+  {%- capture flickity_options -%}
+  {
+    "prevNextButtons": true,
+    "pageDots": false,
+    "wrapAround": false,
+    "contain": true,
+    "cellAlign": "center",
+    "watchCSS": true,
+    "dragThreshold": 8,
+    "groupCells": true,
+    "arrowShape": {"x0": 20, "x1": 60, "y1": 40, "x2": 60, "y2": 35, "x3": 25}
+  }
+  {%- endcapture -%}
+{%- endif -%}
+
+{%- capture section_settings -%}
+{
+  "layout": {{ settings.layout_mode | json }},
+  "useAjaxCart": {% if settings.cart_type == 'drawer' %}true{% else %}false{% endif %}
+}
+{%- endcapture -%}
+
+    {%- assign collection = collections[settings.collection] -%}
+     
+      <div class="ProductListWrapper ProductListSide">
+        {%- if collection != empty -%}
+          {%- assign item_count = settings.grid_items_count -%}
+
+          {%- if collection.products_count < settings.grid_items_count -%}
+            {%- assign item_count = collection.products_count -%}
+          {%- endif -%}
+
+          {%- if settings.layout_mode == 'grid' -%}
+            <div class="ProductList ProductList--grid ProductList--removeMargin Grid" data-mobile-count="{{ settings.grid_mobile_items_per_row }}" data-desktop-count="{{ settings.grid_desktop_items_per_row }}">
+              {%- for product in collection.products limit: settings.grid_items_count -%}
+                <div class="Grid__Cell 1/{{ settings.grid_mobile_items_per_row }}--phone 1/2--tablet 1/{{ settings.grid_desktop_items_per_row }}--lap-and-up">
+                  {%- include 'product-item', show_product_info: settings.show_product_info, show_vendor: settings.show_vendor, show_color_swatch: settings.show_color_swatch, show_labels: true -%}
+              	</div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="ProductList ProductList--carousel Carousel" data-flickity-config='{{ flickity_options }}'>
+              {%- for product in collection.products limit: settings.grid_items_count -%}
+                <div class="Carousel__Cell">
+                  {%- include 'product-item', show_product_info: settings.show_product_info, show_vendor: settings.show_vendor, show_color_swatch: settings.show_color_swatch, show_labels: true -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+
+{%- capture hack -%}
+{%- comment -%}This is just an ugly hack to make those variables appear as part of the theme editor in the General Settings{%- endcomment -%}
+{% if section.settings.layout_mode == 'grid' %}{{ settings.product_list_horizontal_spacing }},{{ settings.product_list_vertical_spacing }}{% endif %}
+{%- endcapture -%}
