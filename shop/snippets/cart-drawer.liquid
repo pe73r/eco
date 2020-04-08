@@ -44,31 +44,20 @@
         </div>    
       {%- endif -%}
     </div>
-<!--
-<script> 
-(function($) { 
- $(document).on('page:load page:change', function () { 
- if (localStorage.getItem('storedDiscount')){ 
- var discountStored = localStorage.getItem('storedDiscount'); 
- $('input[name="discount"]').val(localStorage.getItem('storedDiscount')); 
- } 
- $('form[action="/cart"]').on('submit', function(){ 
- var $discountCode = $('input[name="discount"]').val(); 
- localStorage.setItem('storedDiscount', $discountCode); 
- }); 
- }); 
-})(jQuery); 
-</script> 
 
-<div class="discount-code-field" style="clear:both;display:block;overflow:hidden;">
-<label>Vous avez un code promo ?</label><br>
-<input style="width:150px;float:right;font-size:13px;" placeholder="Mon code promo" p autocomplete="off" type="text" name="discount" />
-</div>
--->
-    <div class="ldw_discount_code">
-      <p class="ldw_discount_code_title">Vous avez un code promo ?</p>
-      <div class="ldw_discount_code_content"></div>
-    </div>
+   <div id="dcodeOuterWrapper" class="dcodeOuterWrapper dcSmooth ">
+     <h3 class="dcode__text">Vous avez un code promo ?</h3>
+      <div id="dcodeInnerWrapper" class=" dcodeInnerWrapper dcSmooth ">
+        <input id="dcodeInput" class=" dcodeInput dcSmooth " placeholder="Mon code promo" value="">
+        <button id="dcodeSubmit" class=" dcodeButton dcSmooth  " type="button">
+          <span id="dcodeButtonLabelPlaceholder">GO</span>
+          <span id="dcodeButtonLabel" style="opacity: 1;">GO</span>
+          <div id="dcodeLoading" class="dcloading"></div>
+        </button>
+        <div class="dc-clearfix-100"></div>
+      </div> 
+  </div>  
+
     
     {%- unless cart.item_count == 0 -%}
       <div class="Drawer__Footer" data-drawer-animated-bottom>
